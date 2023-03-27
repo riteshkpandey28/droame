@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Droame | {% block title %}{% endblock %}</title>
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+        integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+
+</head>
+
+<body>
+
+    <div class="text-center my-1">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="" style="max-width: 10%;">
+    </div>
+
+    <main>
+
+        <div class="container">
+            <div class="glass p-4">
+
+                <div class="glass p-2 text-center" style="margin-bottom: 10px;">
+                    <a href="/" class="btn btn-primary">Home</a>
+                    <a href="/customer" class="btn btn-primary">Customers</a>
+                    <a href="/drone" class="btn btn-primary">Drone Shots</a>
+                    <a href="/booking" class="btn btn-primary">Bookings</a>
+                </div>
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <div class="footer text-center py-2">
+        <hr style="border-top: 13px double #000000;">
+        <h4>Copyright &copy; Ritesh Kumar Pandey</h4>
+        <div class="icons">
+            <a href="mailto: riteshkpandey28@gmail.com">
+                <i class="far fa-envelope"></i>
+            </a> &nbsp;
+            <a href="tel:9082407433"> <i class="fas fa-phone"></i> </a> &nbsp;
+            <a href="https://www.instagram.com/riteshkpandey_/" target="blank">
+                <i class="fab fa-instagram"></i>
+            </a> &nbsp;
+            <a href="https://github.com/riteshkpandey28/" target="blank"> <i class="fab fa-github"></i> </a>
+            &nbsp;
+            <a href="https://www.linkedin.com/in/riteshkpandey28/" target="blank"> <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

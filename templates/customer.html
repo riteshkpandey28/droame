@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %} Customer Page {% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages(category_filter=["validemail", "customer_register", "customer_update",
+"customer_delete"]) %}
+{% if messages %}
+{% for msg in messages %}
+<script>
+    window.alert('{{ msg }}');
+</script>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="row">
+
+    <div class="col-lg-4">
+        <form action="/customer" method="POST" enctype="multipart/form-data">
+            <div class="form-group py-2">
+                <label for="">Customer Name</label>
+                <input required type="text" name="custname" class="form-control" placeholder="Enter Customer Name">
+            </div>
+            <div class="form-group py-2">
+                <label for="">Email</label>
+                <input required type="email" name="custemail" class="form-control" placeholder="Enter Customer Email">
+            </div>
+            <div class="form-group py-2">
+                <label for="">Phone Number</label>
+                <input required type="tel" name="custphone" class="form-control" placeholder="Enter Customer Phone">
+            </div>
+            <div class="form-group py-2">
+                <label for="">Customer Picture</label>
+                <input required type="file" accept="image/**" name="custpic" class="form-control">
+            </div>
+            <div class="row py-2">
+                <input required type="reset" value="Clear Form" class="btn btn-danger col-5 mx-2">
+                <input required type="submit" value="Save" class="btn btn-success col-6 mx-2">
+            </div>
+        </form>
+    </div>
+
+    <div class="col-lg-8 table-wrapper">
+        <table class="table table-responsive text-center">
+            <thead class="bg-info">
+                <tr>
+                    <th>Sr. No.</th>
+                    <th></th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Phone no.</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rs in rs %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>
+                        <div class="round-img">
+                            <a href="#"><img class="rounded-circle" style="width: 38px; height: 38px;"
+                                    src="/customer_profile{{rs[0]}}" alt=""></a>
+                        </div>
+                    </td>
+                    <td>{{rs[1]}}</td>
+                    <td>{{rs[2]}}</td>
+                    <td>{{rs[3]}}</td>
+                    <td><a href="/customer_update{{rs[0]}}" class="btn btn-warning">Update</a></td>
+                    <td><a href="/customer_delete{{rs[0]}}" class="btn btn-danger">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %} Drone Page {% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages(category_filter=["drone_register", "drone_delete"]) %}
+{% if messages %}
+{% for msg in messages %}
+<script>
+    window.alert('{{ msg }}');
+</script>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form action="/drone" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="form-group py-2 col-lg-4">
+            <label for="">Drone Shot Type</label>
+            <select name="droneshottype" id="droneshots" class="form-control" required>
+                <option value="" disabled selected hidden>Select Drone Shot Type</option>
+                <option value="Spinning Elevation Shot">Spinning Elevation Shot</option>
+                <option value="Half Moon Bay Shot">Half Moon Bay Shot</option>
+                <option value="Object Shot">Object Shot</option>
+                <option value="180 Degree Shot">180 Degree Shot</option>
+                <option value="High Angle Shot">High Angle Shot</option>
+                <option value="Arc Shot">Arc Shot</option>
+            </select>
+        </div>
+        <div class="form-group py-2 col-lg-4">
+            <label for="">Location</label>
+            <input required type="text" name="location" class="form-control"
+                placeholder="Enter the Drone Shot Location">
+        </div>
+        <div class="form-group py-2 col-lg-4">
+            <label for="">Video Link</label>
+            <input required type="file" accept="video/**" name="videolink" class="form-control">
+        </div>
+    </div>
+    <div class="py-2 text-center">
+        <input required type="reset" value="Clear Form" class="btn btn-danger col-4 mx-2">
+        <input required type="submit" value="Save" class="btn btn-success col-4 mx-2">
+    </div>
+</form>
+
+<div class="row col-lg-10 col-md-10 mx-auto col-12">
+    {% for rs in rs %}
+    <div class="card" style="width: 18rem; margin: 5px;">
+        <video controls loop autoplay muted class="card-img-top" style="height: 250px;">
+            <source src="/drone_video{{rs[0]}}">
+        </video>
+        <div class="card-body">
+            <h5 class="card-title text-center text-primary">{{rs[1]}} - {{rs[2]}}</h5>
+            <div class="text-center">
+                <a href="/drone_delete{{rs[0]}}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

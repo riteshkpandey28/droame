@@ -1,0 +1,29 @@
+body {
+  background: linear-gradient(
+    84deg,
+    rgb(240, 229, 229) 0%,
+    rgba(98, 96, 203, 0.799) 35%,
+    rgba(254, 224, 155, 0.687) 100%
+  );
+}
+
+.glass {
+  background-color: rgba(226, 17, 17, 0.159) !important;
+  border-radius: 25px !important;
+}
+
+.table-wrapper {
+  max-height: 350px;
+  overflow: auto;
+  display: inline-block;
+}
+
+.icons a {
+  text-decoration: none;
+}
+.icons i {
+  color: black;
+}
+.icons i:hover {
+  color: red;
+}
