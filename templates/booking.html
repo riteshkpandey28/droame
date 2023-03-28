@@ -4,4 +4,108 @@
 
 {% block content %}
 
+{% with messages = get_flashed_messages(category_filter=["booking_register", "booking_delete", "booking_clear"]) %}
+{% if messages %}
+{% for msg in messages %}
+<script>
+    window.alert('{{ msg }}');
+</script>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form action="/booking" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="form-group py-2 col-lg-3">
+            <label for="">Customer</label>
+            <select name="customerid" id="customernames" class="form-control" required>
+                <option value="" disabled selected hidden>Select Customer</option>
+                {% for customer in customers %}
+                <option value="{{customer[0]}}">{{customer[1]}}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <div class="form-group py-2 col-lg-3">
+            <label for="">Drone Shot Type</label>
+            <select name="droneshottype" id="droneshots" class="form-control" required>
+                <option value="" disabled selected hidden>Select Drone Shot Type</option>
+                <option value="Spinning Elevation Shot">Spinning Elevation Shot</option>
+                <option value="Half Moon Bay Shot">Half Moon Bay Shot</option>
+                <option value="Object Shot">Object Shot</option>
+                <option value="180 Degree Shot">180 Degree Shot</option>
+                <option value="High Angle Shot">High Angle Shot</option>
+                <option value="Arc Shot">Arc Shot</option>
+            </select>
+        </div>
+        <div class="form-group py-2 col-lg-3">
+            <label for="">Location</label>
+            <input required type="text" name="location" class="form-control"
+                placeholder="Enter the Drone Shot Location">
+        </div>
+        <div class="form-group py-2 col-lg-3">
+            <label for="">Delivery Dealine</label>
+            <input required type="date" name="deadlinedate" class="form-control" id="inputdate">
+        </div>
+    </div>
+    <div class="py-2 text-center">
+        <input required type="reset" value="Clear Form" class="btn btn-danger col-4 mx-2">
+        <input required type="submit" value="Save" class="btn btn-success col-4 mx-2">
+    </div>
+</form>
+
+<table class="table table-responsive text-center">
+    <thead class="bg-info">
+        <tr>
+            <th>Sr. No.</th>
+            <th></th>
+            <th>Customer</th>
+            <th>Drone Shot Type</th>
+            <th>Location</th>
+            <th>Bookings Created</th>
+            <th>Delivery Deadline</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-white">
+        {% for rs in final_bookings %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>
+                <div class="round-img">
+                    <a href="#"><img class="rounded-circle" style="width: 38px; height: 38px;"
+                            src="/customer_profile{{rs[1]}}" alt=""></a>
+                </div>
+            </td>
+            <td>{{rs[7]}}</td>
+            <td>{{rs[2]}}</td>
+            <td>{{rs[3]}}</td>
+            <td>{{rs[4]}}</td>
+            <td>{{rs[5]}}</td>
+            <td><a href="/booking_update{{rs[0]}}" class="btn btn-warning">Clear Booking</a></td>
+            <td><a href="/booking_delete{{rs[0]}}" class="btn btn-danger">Cancel Booking</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#inputdate').attr('min', maxDate);
+    });
+</script>
+
 {% endblock %}

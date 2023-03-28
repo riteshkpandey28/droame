@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from flask.helpers import send_file
 from io import BytesIO
 import sqlite3
+from datetime import date
 
 app = Flask(__name__)
 app.secret_key = 'ritesh'
@@ -25,6 +26,16 @@ def customer():
     c.execute("SELECT * FROM customers")
     rs = c.fetchall()
 
+    final_rs = []
+
+    for i in rs:
+        i = list(i)
+        c.execute("SELECT COUNT(custid) FROM bookings WHERE iscleared =0 AND custid = '"+str(i[0])+"'")
+        count = c.fetchone()
+        i.append(count[0])
+        final_rs.append(i)
+
+
     if request.method == 'POST':
         custname = request.form['custname']
         custemail = request.form['custemail']
@@ -46,7 +57,7 @@ def customer():
         return redirect(url_for('customer'))
 
     conn.close()
-    return render_template('customer.html', rs=rs)
+    return render_template('customer.html', final_rs=final_rs)
 
 @app.route('/customer_profile<int:id>')
 def customer_profile(id):
@@ -106,9 +117,77 @@ def customer_delete(id):
 ###############################################################
 
 # Booking Page
-@app.route('/booking')
+@app.route('/booking', methods = ['POST', 'GET'])
 def booking():
-    return render_template('booking.html')
+    conn = sqlite3.connect(database)
+    c = conn.cursor()
+
+    c.execute("SELECT custid, custname FROM customers")
+    customers = c.fetchall()
+
+    c.execute("SELECT * FROM bookings where iscleared = '0'")
+    bookings = c.fetchall()
+
+    final_bookings = []
+
+    for i in bookings:
+        i = (list(i))
+        for j in customers:
+            if i[1] == j[0]:
+                i.append(j[1])
+                final_bookings.append(i)
+                break
+
+    if request.method == 'POST':
+        customerid = request.form['customerid']
+        droneshottype = request.form['droneshottype']
+        location = request.form['location']
+        deadlinedate = request.form['deadlinedate']
+        createdate = today = date.today()
+
+        c.execute("INSERT INTO bookings (custid, droneshottype, location, createdate, deadlinedate) VALUES (?, ?, ?, ?, ?)", (customerid, droneshottype, location, createdate, deadlinedate))
+        conn.commit()
+        flash("Booking Created !", 'booking_register')
+
+        return(redirect(url_for('booking')))
+
+    conn.close()
+
+    context = {
+        'customers': customers,
+        'final_bookings': final_bookings
+    }
+
+    return render_template('booking.html', **context)
+
+@app.route('/booking_update<int:id>')
+def booking_update(id):
+    conn = sqlite3.connect(database)
+    c = conn.cursor()
+
+    c.execute("UPDATE bookings SET iscleared = '1' WHERE bookingid = '"+str(id)+"'")
+    conn.commit()
+
+    c.execute("SELECT custid FROM bookings WHERE bookingid = '"+str(id)+"'")
+    rs = c.fetchone()
+
+    c.execute("UPDATE customers SET clearedbooking = (clearedbooking + 1) WHERE custid = '"+str(rs[0])+"'")
+    conn.commit()
+
+    conn.close()
+
+    flash("Booking Cleared ! ", 'booking_clear')
+    return redirect(url_for('booking'))
+
+@app.route('/booking_delete<int:id>')
+def booking_delete(id):
+    conn = sqlite3.connect(database)
+    c = conn.cursor()
+    c.execute("DELETE FROM bookings WHERE bookingid = '"+str(id)+"'")
+    conn.commit()
+    conn.close()
+    flash("Booking Cancelled ! ", 'booking_delete')
+    return redirect(url_for('booking'))
 
 ###############################################################
 #   --- Booking Management Functionalities - END ---          #

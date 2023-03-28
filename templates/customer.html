@@ -16,7 +16,7 @@
 
 <div class="row">
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <form action="/customer" method="POST" enctype="multipart/form-data">
             <div class="form-group py-2">
                 <label for="">Customer Name</label>
@@ -35,13 +35,13 @@
                 <input required type="file" accept="image/**" name="custpic" class="form-control">
             </div>
             <div class="row py-2">
-                <input required type="reset" value="Clear Form" class="btn btn-danger col-5 mx-2">
+                <input required type="reset" value="Clear Form" class="btn btn-danger col-4 mx-2">
                 <input required type="submit" value="Save" class="btn btn-success col-6 mx-2">
             </div>
         </form>
     </div>
 
-    <div class="col-lg-8 table-wrapper">
+    <div class="col-lg-9 table-wrapper">
         <table class="table table-responsive text-center">
             <thead class="bg-info">
                 <tr>
@@ -50,12 +50,14 @@
                     <th>Customer</th>
                     <th>Email</th>
                     <th>Phone no.</th>
+                    <th>Bookings Cleared</th>
+                    <th>Bookings Pending</th>
                     <th></th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                {% for rs in rs %}
+            <tbody class="text-white">
+                {% for rs in final_rs %}
                 <tr>
                     <td>{{loop.index}}</td>
                     <td>
@@ -67,6 +69,8 @@
                     <td>{{rs[1]}}</td>
                     <td>{{rs[2]}}</td>
                     <td>{{rs[3]}}</td>
+                    <td>{{rs[5]}}</td>
+                    <td>{{rs[6]}}</td>
                     <td><a href="/customer_update{{rs[0]}}" class="btn btn-warning">Update</a></td>
                     <td><a href="/customer_delete{{rs[0]}}" class="btn btn-danger">Delete</a></td>
                 </tr>

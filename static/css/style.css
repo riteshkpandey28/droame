@@ -1,14 +1,15 @@
 body {
+  color: white !important;
   background: linear-gradient(
     84deg,
-    rgb(240, 229, 229) 0%,
-    rgba(98, 96, 203, 0.799) 35%,
-    rgba(254, 224, 155, 0.687) 100%
+    rgb(48, 46, 46) 0%,
+    rgba(34, 33, 55, 0.799) 35%,
+    rgba(0, 0, 0, 0.687) 100%
   );
 }
 
 .glass {
-  background-color: rgba(226, 17, 17, 0.159) !important;
+  background-color: rgba(255, 235, 235, 0.159) !important;
   border-radius: 25px !important;
 }
 
@@ -22,7 +23,7 @@ body {
   text-decoration: none;
 }
 .icons i {
-  color: black;
+  color: white;
 }
 .icons i:hover {
   color: red;
